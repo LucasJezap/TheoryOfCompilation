@@ -1,11 +1,12 @@
 import sys
-import scanner
 import Mparser
+import scanner
+
 
 if __name__ == '__main__':
 
     try:
-        filename = sys.argv[1] if len(sys.argv) > 1 else "example1.m"
+        filename = sys.argv[1] if len(sys.argv) > 1 else "error.m"
         file = open(filename, "r")
     except IOError:
         print("Cannot open {0} file".format(filename))
@@ -13,4 +14,8 @@ if __name__ == '__main__':
 
     parser = Mparser.parser
     text = file.read()
-    parser.parse(text, lexer=scanner.lexer)
+    try:
+        ast = parser.parse(text, lexer=scanner.lexer)
+        ast.printTree()
+    except Exception as e:
+        print(e)
